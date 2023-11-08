@@ -4,12 +4,6 @@
     ViewData["Title"] = "Edit";
 }
 
-@model TPLabo4.Models.Carpinteria
-
-@{
-    ViewData["Title"] = "Edit";
-}
-
 <h1>Edit</h1>
 
 <h4>Carpinteria</h4>
@@ -48,7 +42,7 @@
                 <input type="hidden" asp-for="fotografia" />
                 @if (!string.IsNullOrEmpty(@Model.fotografia))
                 {
-                    <img src="~/imagenes/Ferreteria/@Model.fotografia" class="rounded-circle" style="max-width:50px" asp-append-version="true" />
+                    <img src="~/imagenes/Carpinteria/" class="rounded-circle" style="max-width:50px" asp-append-version="true" />
                 }
                 <input type="file" id="foto" name="foto" accept="image/*" />
                 <span asp-validation-for="fotografia" class="text-danger"></span>

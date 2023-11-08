@@ -4,13 +4,13 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Carpinteria</h1>
 
 <form method="post" asp-controller="Carpinterias" asp-action="ImportExcel" enctype="multipart/form-data">
     <div class="form-group">
         <input type="file" name="file" class="form-control-file">
     </div>
-    <button type="submit" class="btn btn-primary">Import Excel</button>
+    <button type="submit" class="btn btn-primary">Importar Excel</button>
 </form>
 <p>
     <a asp-action="Create">Agregar un nuevo producto</a>
@@ -25,16 +25,16 @@
                 @Html.DisplayNameFor(model => model.Stock)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.descripcion)
+                @Html.DisplayNameFor(model => model.fotografia)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.precio)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.IdCalidad)
+                @Html.DisplayNameFor(model => model.descripcion)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.fotografia)
+                @Html.DisplayNameFor(model => model.IdCalidad)
             </th>
             <th></th>
         </tr>
@@ -49,19 +49,19 @@
                 @Html.DisplayFor(modelItem => item.Stock)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.descripcion)
+                @if (!string.IsNullOrEmpty(@item.fotografia))
+                {
+                    <img src="~/imagenes/Carpinteria/" class="rounded-circle" style="max-width:50px" asp-append-version="true" />
+                }
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.precio)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.IdCalidad)
+                @Html.DisplayFor(modelItem => item.descripcion)
             </td>
             <td>
-                @if (!string.IsNullOrEmpty(@item.fotografia))
-                {
-                    <img src="~/imagenes/Ferreteria/@item.fotografia" class="rounded-circle" style="max-width:50px" asp-append-version="true" />
-                }
+                @Html.DisplayFor(modelItem => item.IdCalidad)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Editar</a> |
