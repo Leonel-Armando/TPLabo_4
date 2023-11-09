@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -26,7 +27,7 @@ namespace TPLabo_4.Controllers
                         View(await _context.calidades.ToListAsync()) :
                         Problem("Entity set 'AppDBcontext.calidades'  is null.");
         }
-
+        [Authorize]
         // GET: Calidades/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -44,7 +45,7 @@ namespace TPLabo_4.Controllers
 
             return View(calidad);
         }
-
+        [Authorize]
         // GET: Calidades/Create
         public IActionResult Create()
         {
@@ -66,7 +67,7 @@ namespace TPLabo_4.Controllers
             }
             return View(calidad);
         }
-
+        [Authorize]
         // GET: Calidades/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -117,6 +118,7 @@ namespace TPLabo_4.Controllers
             }
             return View(calidad);
         }
+        [Authorize]
 
         // GET: Calidades/Delete/5
         public async Task<IActionResult> Delete(int? id)

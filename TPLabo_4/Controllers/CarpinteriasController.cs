@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -21,6 +22,7 @@ namespace TPLabo_4.Controllers
             _context = context;
             _env = env;
         }
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> ImportExcel(IFormFile file)
         {
@@ -62,7 +64,7 @@ namespace TPLabo_4.Controllers
             var applicationDbContext = _context.carpinterias.Include(a => a.Calidad);
             return View(await applicationDbContext.ToListAsync());
         }
-
+        [Authorize]
         // GET: Carpinterias/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -80,7 +82,7 @@ namespace TPLabo_4.Controllers
 
             return View(carpinteria);
         }
-
+        [Authorize]
         // GET: Carpinterias/Create
         public IActionResult Create()
         {
@@ -98,7 +100,6 @@ namespace TPLabo_4.Controllers
             if (ModelState.IsValid)
             {
                 carpinteria.fotografia = cargarFoto("");
-
                 _context.Add(carpinteria);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -106,7 +107,7 @@ namespace TPLabo_4.Controllers
             ViewData["IdCalidad"] = new SelectList(_context.calidades, "Id", "Id", carpinteria.IdCalidad);
             return View(carpinteria);
         }
-
+        [Authorize]
         // GET: Carpinterias/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -140,8 +141,7 @@ namespace TPLabo_4.Controllers
             {
                 try
                 {
-                    string nuevaFoto =
-                    cargarFoto(string.IsNullOrEmpty(carpinteria.fotografia) ? "" : carpinteria.fotografia);
+                    string nuevaFoto = cargarFoto(string.IsNullOrEmpty(carpinteria.fotografia) ? "" : carpinteria.fotografia);
 
                     if (!string.IsNullOrEmpty(nuevaFoto))
                         carpinteria.fotografia = nuevaFoto;
@@ -161,10 +161,10 @@ namespace TPLabo_4.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IdCalidad"] = new SelectList(_context.calidades, "id", "TipoMadera", carpinteria.IdCalidad);
+            ViewData["IdCalidad"] = new SelectList(_context.calidades, "id", "id", carpinteria.IdCalidad);
             return View(carpinteria);
         }
-
+        [Authorize]
         // GET: Carpinterias/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {

@@ -12,8 +12,8 @@ using TPLabo_4.Data;
 namespace TPLabo_4.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231104185822_inico")]
-    partial class inico
+    [Migration("20231109183401_inicio")]
+    partial class inicio
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

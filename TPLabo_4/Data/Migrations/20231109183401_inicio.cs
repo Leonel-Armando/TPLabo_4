@@ -4,7 +4,7 @@
 
 namespace TPLabo_4.Data.Migrations
 {
-    public partial class mejora : Migration
+    public partial class inicio : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

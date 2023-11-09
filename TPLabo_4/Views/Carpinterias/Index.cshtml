@@ -25,7 +25,7 @@
                 @Html.DisplayNameFor(model => model.Stock)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.fotografia)
+                fotografia
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.precio)
@@ -49,9 +49,9 @@
                 @Html.DisplayFor(modelItem => item.Stock)
             </td>
             <td>
-                @if (!string.IsNullOrEmpty(@item.fotografia))
+                @if (!string.IsNullOrEmpty(item.fotografia))
                 {
-                    <img src="~/imagenes/Carpinteria/" class="rounded-circle" style="max-width:50px" asp-append-version="true" />
+                    <img src="~/imagenes/Carpinteria/" class="img-thumbnail" style="max-width:50px; max-height:75px" asp-append-version="true" />
                 }
             </td>
             <td>

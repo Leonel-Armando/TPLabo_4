@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -20,39 +21,9 @@ namespace TPLabo_4.Controllers
         public FerreteriasController(ApplicationDbContext context, IWebHostEnvironment env)
         {
             _context = context;
-            _env = env;
+            this._env = env;
         }
-        public async Task<IActionResult> ImportExcel(IFormFile file)
-        {
-            if (file == null || file.Length == 0)
-            {
-                ModelState.AddModelError("file", "Please select a file");
-                return View("Index");
-            }
-
-            using (var package = new ExcelPackage(file.OpenReadStream()))
-            {
-                var worksheet = package.Workbook.Worksheets[0];
-                var rowCount = worksheet.Dimension.Rows;
-
-                for (int row = 2; row <= rowCount; row++)
-                {
-                    var ferreteria = new Ferreteria
-                    {
-                        nombre = worksheet.Cells[row, 1].Value.ToString(),
-                        Stock = bool.Parse(worksheet.Cells[row, 2].Value.ToString()),
-                        fotografia = worksheet.Cells[row, 3].Value.ToString(),
-                        precio = int.Parse(worksheet.Cells[row, 4].Value.ToString()),
-                    };
-
-                    _context.Add(ferreteria);
-                }
-
-                await _context.SaveChangesAsync();
-            }
-
-            return RedirectToAction(nameof(Index));
-        }
+       
         // GET: Ferreterias
         public async Task<IActionResult> Index()
         {
@@ -60,7 +31,7 @@ namespace TPLabo_4.Controllers
                         View(await _context.ferreterias.ToListAsync()) :
                         Problem("Entity set 'AppDBcontext.ferreterias'  is null.");
         }
-
+        [Authorize]
         // GET: Ferreterias/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -78,7 +49,7 @@ namespace TPLabo_4.Controllers
 
             return View(ferreteria);
         }
-
+        [Authorize]
         // GET: Ferreterias/Create
         public IActionResult Create()
         {
@@ -102,7 +73,7 @@ namespace TPLabo_4.Controllers
             }
             return View(ferreteria);
         }
-
+        [Authorize]
         // GET: Ferreterias/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -136,7 +107,7 @@ namespace TPLabo_4.Controllers
                 try
                 {
                     string nuevaFoto =
-                     cargarFoto(string.IsNullOrEmpty(ferreteria.fotografia) ? "" : ferreteria.fotografia);
+                       cargarFoto(string.IsNullOrEmpty(ferreteria.fotografia) ? "" : ferreteria.fotografia);
 
                     if (!string.IsNullOrEmpty(nuevaFoto))
                         ferreteria.fotografia = nuevaFoto;
@@ -159,7 +130,7 @@ namespace TPLabo_4.Controllers
             }
             return View(ferreteria);
         }
-
+        [Authorize]
         // GET: Ferreterias/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
@@ -201,7 +172,7 @@ namespace TPLabo_4.Controllers
         {
             return (_context.ferreterias?.Any(e => e.Id == id)).GetValueOrDefault();
         }
-        private string cargarFoto(string fotoAnterior)
+       private string cargarFoto(string fotoAnterior)
         {
             var archivos = HttpContext.Request.Form.Files;
             if (archivos != null && archivos.Count > 0)
@@ -210,13 +181,11 @@ namespace TPLabo_4.Controllers
                 if (archivoFoto.Length > 0)
                 {
                     var pathDestino = Path.Combine(_env.WebRootPath, "imagenes\\Ferreteria");
-
                     fotoAnterior = Path.Combine(pathDestino, fotoAnterior);
                     if (System.IO.File.Exists(fotoAnterior))
                         System.IO.File.Delete(fotoAnterior);
 
-                    var archivoDestino = Guid.NewGuid().ToString().Replace("-", "");
-                    archivoDestino += Path.GetExtension(archivoFoto.FileName);
+                    var archivoDestino = Guid.NewGuid().ToString().Replace("-", "") + Path.GetExtension(archivoFoto.FileName);
 
                     using (var filestream = new FileStream(Path.Combine(pathDestino, archivoDestino), FileMode.Create))
                     {

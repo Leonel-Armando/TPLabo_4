@@ -3,7 +3,7 @@
 @{
     ViewData["Title"] = "Edit";
 }
-<h1>Edit</h1>
+<h1>Editar</h1>
 
 <h4>Ferreteria</h4>
 <hr />
@@ -23,18 +23,21 @@
                 </label>
             </div>
             <div class="form-group">
+                <br />
+                <td>
+                    @if (!string.IsNullOrEmpty(Model.fotografia))
+                    {
+                        <img src="~/imagenes/Ferreteria/" id="imagenes" class="img-thumbnail" style="max-width:50px; max-height:75px" asp-append-version="true" />
+                    }
+                </td>
+                <br />
+                <label class="control-label">Seleccione una Fotografia</label>
+                <input type="file" id="fotografia" name="fotografia" />
+            </div>
+            <div class="form-group">
                 <label asp-for="precio" class="control-label"></label>
                 <input asp-for="precio" class="form-control" />
                 <span asp-validation-for="precio" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="hidden" asp-for="fotografia" />
-                @if (!string.IsNullOrEmpty(@Model.fotografia))
-                {
-                    <img src="~/imagenes/Ferreteria/@Model.fotografia" class="rounded-circle" style="max-width:50px" asp-append-version="true" />
-                }
-                <input type="file" id="fotografia" name="fotografia" accept="image/*" />
-                <span asp-validation-for="fotografia" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="guardar" class="btn btn-primary" />

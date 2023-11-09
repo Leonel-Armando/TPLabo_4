@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -21,37 +22,7 @@ namespace TPLabo_4.Controllers
             _context = context;
             _env = env;
         }
-        public async Task<IActionResult> ImportExcel(IFormFile file)
-        {
-            if (file == null || file.Length == 0)
-            {
-                ModelState.AddModelError("file", "Please select a file");
-                return View("Index");
-            }
-
-            using (var package = new ExcelPackage(file.OpenReadStream()))
-            {
-                var worksheet = package.Workbook.Worksheets[0];
-                var rowCount = worksheet.Dimension.Rows;
-
-                for (int row = 2; row <= rowCount; row++)
-                {
-                    var empleado = new Empleado
-                    {
-                        nombre = worksheet.Cells[row, 1].Value.ToString(),
-                        edad = int.Parse(worksheet.Cells[row, 2].Value.ToString()),
-                        experiencia = int.Parse(worksheet.Cells[row, 3].Value.ToString()),
-                        fotografia = worksheet.Cells[row, 4].Value.ToString(),
-                    };
-
-                    _context.Add(empleado);
-                }
-
-                await _context.SaveChangesAsync();
-            }
-
-            return RedirectToAction(nameof(Index));
-        }
+       
         // GET: Empleados
         public async Task<IActionResult> Index()
         {
@@ -59,7 +30,7 @@ namespace TPLabo_4.Controllers
                         View(await _context.empleados.ToListAsync()) :
                         Problem("Entity set 'AppDBcontext.empleados'  is null.");
         }
-
+        [Authorize]
         // GET: Empleados/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -77,7 +48,7 @@ namespace TPLabo_4.Controllers
 
             return View(empleado);
         }
-
+        [Authorize]
         // GET: Empleados/Create
         public IActionResult Create()
         {
@@ -100,7 +71,7 @@ namespace TPLabo_4.Controllers
             }
             return View(empleado);
         }
-
+        [Authorize]
         // GET: Empleados/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -157,7 +128,7 @@ namespace TPLabo_4.Controllers
             }
             return View(empleado);
         }
-
+        [Authorize]
         // GET: Empleados/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
