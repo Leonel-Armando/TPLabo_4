@@ -24,12 +24,12 @@ namespace TPLabo_4.Controllers
         }
        
         // GET: Empleados
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int page = 1, int pageSize = 3)
         {
             return _context.empleados != null ?
-                        View(await _context.empleados.ToListAsync()) :
-                        Problem("Entity set 'AppDBcontext.empleados'  is null.");
-        }
+                         View(await _context.empleados.ToListAsync()) :
+                         Problem("Entity set 'AppDBcontext.empleados'  is null.");
+        }     
         [Authorize]
         // GET: Empleados/Details/5
         public async Task<IActionResult> Details(int? id)

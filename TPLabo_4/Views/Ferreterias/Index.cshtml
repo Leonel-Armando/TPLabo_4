@@ -9,6 +9,12 @@
 <p>
     <a asp-action="Create">Agregar nuevos productos</a>
 </p>
+<form asp-action="Index" method="get">
+    <p>
+        Nombre: <input type="text" name="busquedaNombre" />
+        <input type="submit" value="Filtrar" />
+    </p>
+</form>
 <table class="table">
     <thead>
         <tr>

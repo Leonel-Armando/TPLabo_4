@@ -23,9 +23,9 @@ namespace TPLabo_4.Controllers
             _context = context;
             this._env = env;
         }
-       
+
         // GET: Ferreterias
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int page = 1, int pageSize = 3)
         {
             return _context.ferreterias != null ?
                         View(await _context.ferreterias.ToListAsync()) :

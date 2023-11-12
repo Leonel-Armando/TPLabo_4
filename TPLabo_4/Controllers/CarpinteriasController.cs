@@ -59,9 +59,14 @@ namespace TPLabo_4.Controllers
         }
 
         // GET: Carpinterias
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string busquedaNombre)
         {
-            var applicationDbContext = _context.carpinterias.Include(a => a.Calidad);
+            var applicationDbContext = _context.carpinterias.Include(a => a.Calidad).Select(a => a);
+            if (!string.IsNullOrEmpty(busquedaNombre))
+            {
+                applicationDbContext = applicationDbContext.Where(a => a.nombre.Contains(busquedaNombre));
+            }
+
             return View(await applicationDbContext.ToListAsync());
         }
         [Authorize]

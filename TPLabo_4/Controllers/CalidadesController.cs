@@ -21,7 +21,7 @@ namespace TPLabo_4.Controllers
         }
 
         // GET: Calidades
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int page = 1, int pageSize = 3)
         {
             return _context.calidades != null ?
                         View(await _context.calidades.ToListAsync()) :
