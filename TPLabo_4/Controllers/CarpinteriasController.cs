@@ -1,14 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing.Printing;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using OfficeOpenXml;
 using TPLabo_4.Data;
 using TPLabo_4.Models;
+using TPLabo_4.ViewsModels;
 
 namespace TPLabo_4.Controllers
 {
@@ -59,15 +62,26 @@ namespace TPLabo_4.Controllers
         }
 
         // GET: Carpinterias
-        public async Task<IActionResult> Index(string busquedaNombre)
+        public async Task<IActionResult> Index(string busquedaNombre, int page = 1, int pageSize = 5)
         {
-            var applicationDbContext = _context.carpinterias.Include(a => a.Calidad).Select(a => a);
+            var applicationDbContext = _context.carpinterias.Select(a => a);
             if (!string.IsNullOrEmpty(busquedaNombre))
             {
                 applicationDbContext = applicationDbContext.Where(a => a.nombre.Contains(busquedaNombre));
             }
 
-            return View(await applicationDbContext.ToListAsync());
+            var totalItems = await applicationDbContext.CountAsync();
+            var itemsToDisplay = await applicationDbContext.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
+
+            CarpinteriaViewModels modelo = new CarpinteriaViewModels()
+            {
+                listaCarpinteria = itemsToDisplay,
+                busquedaNombre = busquedaNombre,
+                CurrentPage = page,
+                PageSize = pageSize,
+                TotalItems = totalItems
+            };
+            return View(modelo);
         }
         [Authorize]
         // GET: Carpinterias/Details/5

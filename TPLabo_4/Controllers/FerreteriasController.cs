@@ -10,6 +10,7 @@ using OfficeOpenXml;
 using TPLabo_4.Data;
 using TPLabo_4.Models;
 
+
 namespace TPLabo_4.Controllers
 {
     public class FerreteriasController : Controller
@@ -21,11 +22,11 @@ namespace TPLabo_4.Controllers
         public FerreteriasController(ApplicationDbContext context, IWebHostEnvironment env)
         {
             _context = context;
-            this._env = env;
+            _env = env;
         }
 
         // GET: Ferreterias
-        public async Task<IActionResult> Index(int page = 1, int pageSize = 3)
+        public async Task<IActionResult> Index()
         {
             return _context.ferreterias != null ?
                         View(await _context.ferreterias.ToListAsync()) :

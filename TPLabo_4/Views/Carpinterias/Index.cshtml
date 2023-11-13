@@ -1,5 +1,5 @@
-﻿@model IEnumerable<TPLabo_4.Models.Carpinteria>
-
+﻿@* @model IEnumerable<TPLabo_4.Models.Carpinteria> *@
+@model TPLabo_4.ViewsModels.CarpinteriaViewModels
 @{
     ViewData["Title"] = "Index";
 }
@@ -25,28 +25,29 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.nombre)
+                @Html.DisplayNameFor(model => model.listaCarpinteria[0].nombre)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Stock)
+                @Html.DisplayNameFor(model => model.listaCarpinteria[0].Stock)
             </th>
             <th>
                 fotografia
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.precio)
+                @Html.DisplayNameFor(model => model.listaCarpinteria[0].precio)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.descripcion)
+                @Html.DisplayNameFor(model => model.listaCarpinteria[0].descripcion)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.IdCalidad)
+                @Html.DisplayNameFor(model => model.listaCarpinteria[0].IdCalidad)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+        @foreach (var item in Model.listaCarpinteria)
+        {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.nombre)
@@ -75,6 +76,18 @@
                 <a asp-action="Delete" asp-route-id="@item.Id">Eliminar</a>
             </td>
         </tr>
-}
+        }
     </tbody>
 </table>
+        <div class="pagination">
+            <nav aria-label="Page navigation">
+                <ul class="pagination">
+                    @for (int i = 1; i <= Model.TotalPages; i++)
+                    {
+                        <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                    <a class="page-link" asp-controller="Carpinterias" asp-action="Index" asp-route-page="@i" asp-route-pageSize="@Model.PageSize">@i</a>
+                        </li>
+                    }
+                </ul>
+            </nav>
+        </div>
